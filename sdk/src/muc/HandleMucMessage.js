@@ -1,4 +1,4 @@
-import Long from 'long';
+import Long from '../../node_modules/long/dist/long';
 var handleMessage = function(meta, status, conn) {
     var self = conn;
     var messageBodyMessage = self.context.root.lookup("easemob.pb.MUCBody");

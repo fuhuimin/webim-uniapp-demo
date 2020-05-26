@@ -1,4 +1,4 @@
-import Long from 'long';
+import Long from '../../node_modules/long/dist/long';
 import getCode from '../status';
 const _code = getCode();
 var handleMessage = function(meta, status, conn) {

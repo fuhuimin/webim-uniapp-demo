@@ -1,4 +1,4 @@
-import Long from 'long'
+import Long from '../../node_modules/long/dist/long'
 // import _utils from '../utils'
 import ChatMessage from './sendChatMessage';
 import getCode from '../status';

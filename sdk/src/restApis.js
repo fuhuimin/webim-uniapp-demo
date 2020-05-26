@@ -2,7 +2,7 @@
 import wxMiniProgram from './checkEnv';
 import HandleChatMessage from './chat/handleChatMessage';
 import getCode from './status';
-var Base64 = require('Base64')
+var Base64 = require('../node_modules/Base64/base64')
 const _code = getCode();
 var _utils
 if (wxMiniProgram) {

@@ -19,7 +19,7 @@
 	</view> -->
 <view>
 	<!-- 左侧列表内容部分 -->
-	<scroll-view :class="'content ' + (gotop? (isIPX? 'goTopX': 'goTop'): 'goback')" enable-back-to-top :scroll-into-view="toView" scroll-y="true" scroll-with-animation="true" :style="'padding-bottom: ' + (isIPX?'270rpx':'226rpx')"> 
+	<scroll-view :class="'content ' + (gotop? (isIPX? 'goTopX': 'goTop'): 'goback')" enable-back-to-top :scroll-into-view="toView" scroll-y="true" scroll-with-animation="true" :style="'width:100%;padding-bottom: ' + (isIPX?'270rpx':'226rpx')"> 
 		<!-- search -->
 		<view class="search" v-if="search_btn">
 			<view @tap="openSearch">
@@ -554,24 +554,24 @@ export default {
 
       let number = 0;
 
-      for (let j = 0; j < someArr.length; ++j) {
-        const query = uni.createSelectorQuery().in(this)
-        query.select(`#inToView${someArr[j].id}`).boundingClientRect(rect => {
-          if (rect) {
-             number = rect.height + number;
-          var newArry = [{
-            'height': number,
-            'key': rect.dataset.id,
-            "name": someArr[j].region
-          }];
-          oHeight = oHeight.concat(newArry);
-          }else{
-            this.$nextTick(()=>{
-              this.getBrands(member)
-            })
-          }
-        }).exec();
-      }
+      // for (let j = 0; j < someArr.length; ++j) {
+      //   const query = uni.createSelectorQuery().in(this)
+      //   query.select(`#inToView${someArr[j].id}`).boundingClientRect(rect => {
+      //     if (rect) {
+      //        number = rect.height + number;
+      //     var newArry = [{
+      //       'height': number,
+      //       'key': rect.dataset.id,
+      //       "name": someArr[j].region
+      //     }];
+      //     oHeight = oHeight.concat(newArry);
+      //     }else{
+      //       this.$nextTick(()=>{
+      //         this.getBrands(member)
+      //       })
+      //     }
+      //   }).exec();
+      // }
 
       ;
     }

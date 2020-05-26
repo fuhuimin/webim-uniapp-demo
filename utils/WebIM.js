@@ -1,5 +1,5 @@
-// import websdk from "../sdk/connection";
-import websdk from "../newSDK/webimSDK3.1.2";
+import websdk from "../sdk/src/connection";
+// import websdk from "../newSDK/webimSDK3.1.2";
 import config from "./WebIMConfig";
 console.group = console.group || {};
 console.groupEnd = console.groupEnd || {};
@@ -209,7 +209,8 @@ WebIM.conn = new WebIM.connection({
   isAutoLogin: false,
   heartBeatWait: WebIM.config.heartBeatWait,
   autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
-  autoReconnectInterval: WebIM.config.autoReconnectInterval
+  autoReconnectInterval: WebIM.config.autoReconnectInterval,
+  miniProgramType:WebIM.config.miniProgramType
 });
 
 module.exports = {

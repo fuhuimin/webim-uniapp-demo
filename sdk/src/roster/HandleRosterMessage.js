@@ -1,4 +1,4 @@
-import Long from 'long'
+import Long from '../../node_modules/long/dist/long'
 var operatRoster = function(option, type, conn) {
     var emptyMessage = [];
     var rosterBody = conn.context.root.lookup("easemob.pb.RosterBody");
