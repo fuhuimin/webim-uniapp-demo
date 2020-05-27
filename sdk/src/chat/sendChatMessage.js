@@ -1,11 +1,4 @@
-// import _utils from '../utils'
-import wxMiniProgram from '../checkEnv';
 var _utils
-if (wxMiniProgram) {
-    _utils = require('../wx/utils').default
-} else {
-    _utils = require('../utils').default
-}
 
 function encodeKeyValueMsg(msg) {
     if (!msg || typeof msg != "object") {
@@ -39,7 +32,7 @@ function encodeKeyValueMsg(msg) {
     return keyValueBodyArr
 }
 
-var sendMessage = function(messageOption, conn) {
+var sendMessage = function (messageOption, conn) {
     var self = conn;
     conn.isDebug && console.log('上行消息：', messageOption)
     var emptyMessage = [];
@@ -108,9 +101,9 @@ var sendMessage = function(messageOption, conn) {
             fifthMessage.customEvent = messageOption.customEvent;
             fifthMessage.customExts = encodeKeyValueMsg.call(conn, messageOption.customExts)
             break;
-            // default:
-            //     throw Error('Unknown type:' + messageOption.type)
-            //     break;
+        // default:
+        //     throw Error('Unknown type:' + messageOption.type)
+        //     break;
     }
 
     if (messageOption.ext) {
@@ -341,7 +334,8 @@ var sendMessage = function(messageOption, conn) {
     conn.sendMSync(firstMessage);
 }
 
-var sendChatMessage = function(messageOption, conn) {
+var sendChatMessage = function (messageOption, conn, utils) {
+    _utils = utils;
     var me = conn || this;
     //var me = this;
     me.msg = messageOption;
@@ -351,7 +345,7 @@ var sendChatMessage = function(messageOption, conn) {
             return;
         }
         var _tmpComplete = me.msg.onFileUploadComplete;
-        var _complete = function(data) {
+        var _complete = function (data) {
             if (data.entities[0]['file-metadata']) {
                 var file_len = data.entities[0]['file-metadata']['content-length'];
                 // me.msg.file_length = file_len;

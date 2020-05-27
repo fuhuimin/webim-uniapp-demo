@@ -39,6 +39,9 @@ function Reader(buffer) {
 
 var create_array = typeof Uint8Array !== "undefined"
     ? function create_typed_array(buffer) {
+    if (buffer === '[401,"normal closed"]') {
+        return console.log('socket正常关闭');
+    }
     if (buffer instanceof Uint8Array || Array.isArray(buffer))
         return new Reader(buffer);
     if (typeof ArrayBuffer !== "undefined" && buffer instanceof ArrayBuffer) //增加ArrayBuffer构建

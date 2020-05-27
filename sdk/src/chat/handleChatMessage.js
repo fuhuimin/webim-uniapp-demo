@@ -1,15 +1,9 @@
 import Long from '../../node_modules/long/dist/long'
-// import _utils from '../utils'
 import ChatMessage from './sendChatMessage';
 import getCode from '../status';
-import wxMiniProgram from '../checkEnv';
 import Message from '../message'
-var _utils
-if (wxMiniProgram) {
-    _utils = require('../wx/utils').default
-} else {
-    _utils = require('../utils').default
-}
+import _utils from '../utils/commonUtil'
+
 const _code = getCode();
 const ContentsType = {
     0: "TEXT",
@@ -21,7 +15,7 @@ const ContentsType = {
     6: "COMMAND",
     7: "CUSTOM"
 }
-var sendDelivery = function(conn, msg, msgId) {
+var sendDelivery = function (conn, msg, msgId) {
     if (conn.delivery && msg.from !== msg.to) {
         var id = conn.getUniqueId();
         var deliverMessage = new Message('delivery', id);
@@ -34,7 +28,7 @@ var sendDelivery = function(conn, msg, msgId) {
     }
 }
 
-var decodeMsg = function(msgExt) {
+var decodeMsg = function (msgExt) {
     if (!msgExt) {
         return
     }
@@ -61,7 +55,7 @@ var decodeMsg = function(msgExt) {
     }
     return msgObj
 }
-var handleMessage = function(meta, status, conn, ignoreCallback) {
+var handleMessage = function (meta, status, conn, ignoreCallback) {
     var self = conn;
     var time = new Long(meta.timestamp.low, meta.timestamp.high, meta.timestamp.unsigned).toString();
     var messageBodyMessage = self.context.root.lookup("easemob.pb.MessageBody");
@@ -134,8 +128,8 @@ var handleMessage = function(meta, status, conn, ignoreCallback) {
                             contentsType: 'EMOJI',
                             from: from,
                             to: to
-                                // , delay: parseMsgData.delayTimeStamp
-                                ,
+                            // , delay: parseMsgData.delayTimeStamp
+                            ,
                             data: emojibody.body,
                             ext: extmsg,
                             time: time,

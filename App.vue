@@ -226,6 +226,9 @@ export default {
         // 	}
         // });
       },
+      onReceivedMessage(message) {
+        console.log('message>>>',message);
+      },
 
       onReadMessage(message) {
         //console.log('已读', message)

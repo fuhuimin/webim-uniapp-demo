@@ -1,6 +1,6 @@
 
 
-import WebIM from './src/connection'
+import WebIM from './src/wxEntry'
 
 export default WebIM
 

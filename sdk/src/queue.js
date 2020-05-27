@@ -8,15 +8,15 @@ Array_h.prototype = {
      *
      * @return {Number} length [数组长度]
      */
-    length: function() {
+    length: function () {
         return this.array.length;
     },
 
-    at: function(index) {
+    at: function (index) {
         return this.array[index];
     },
 
-    set: function(index, obj) {
+    set: function (index, obj) {
         this.array[index] = obj;
     },
 
@@ -26,7 +26,7 @@ Array_h.prototype = {
      * @param  {*} obj [description]
      * @return {Number} length [新数组的长度]
      */
-    push: function(obj) {
+    push: function (obj) {
         return this.array.push(obj);
     },
 
@@ -37,24 +37,24 @@ Array_h.prototype = {
      * @param  {Number} end [结束索引值]
      * @return {Array} newArray  [新的数组]
      */
-    slice: function(start, end) {
+    slice: function (start, end) {
         return this.array = this.array.slice(start, end);
     },
 
-    concat: function(array) {
+    concat: function (array) {
         this.array = this.array.concat(array);
     },
 
-    remove: function(index, count) {
+    remove: function (index, count) {
         count = count === undefined ? 1 : count;
         this.array.splice(index, count);
     },
 
-    join: function(separator) {
+    join: function (separator) {
         return this.array.join(separator);
     },
 
-    clear: function() {
+    clear: function () {
         this.array.length = 0;
     }
 };
@@ -64,7 +64,7 @@ Array_h.prototype = {
  *
  * 一种先进先出的数据缓存器
  */
-var Queue = function() {
+var Queue = function () {
     this._array_h = new Array_h();
 };
 
@@ -77,7 +77,7 @@ Queue.prototype = {
      * @param  {Object} obj [description]
      * @return {[type]}     [description]
      */
-    push: function(obj) {
+    push: function (obj) {
         this._array_h.push(obj);
     },
 
@@ -86,7 +86,7 @@ Queue.prototype = {
      *
      * @return {Object} [description]
      */
-    pop: function() {
+    pop: function () {
         var ret = null;
         if (this._array_h.length()) {
             ret = this._array_h.at(this._index);
@@ -103,7 +103,7 @@ Queue.prototype = {
      *
      * @return {Object} [description]
      */
-    head: function() {
+    head: function () {
         var ret = null,
             len = this._array_h.length();
         if (len) {
@@ -117,7 +117,7 @@ Queue.prototype = {
      *
      * @return {Object} [description]
      */
-    tail: function() {
+    tail: function () {
         var ret = null,
             len = this._array_h.length();
         if (len) {
@@ -131,7 +131,7 @@ Queue.prototype = {
      *
      * @return {Number} [description]
      */
-    length: function() {
+    length: function () {
         return this._array_h.length() - this._index;
     },
 
@@ -140,11 +140,11 @@ Queue.prototype = {
      *
      * @return {Boolean} [description]
      */
-    empty: function() {
+    empty: function () {
         return (this._array_h.length() === 0);
     },
 
-    clear: function() {
+    clear: function () {
         this._array_h.clear();
     }
 };
