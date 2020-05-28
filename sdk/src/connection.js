@@ -479,7 +479,6 @@ connection.prototype._backqueue = function (backqueue, conn) {
 }
 
 var unreadDeal = function (conn) {
-    debugger
     var emptyMessage = [];
     var MSyncMessage = root.lookup("easemob.pb.MSync");
     var firstMessage = MSyncMessage.decode(emptyMessage);
@@ -491,7 +490,6 @@ var unreadDeal = function (conn) {
 }
 
 connection.prototype._receiveProvision = function (result, conn) {
-    debugger
     var provisionMessage = root.lookup("easemob.pb.Provision");
     var receiveProvisionResult = provisionMessage.decode(result.payload);
     conn.context.jid.clientResource = receiveProvisionResult.resource;
@@ -504,7 +502,6 @@ connection.prototype._receiveProvision = function (result, conn) {
 
 connection.prototype.heartBeatID = 0;
 connection.prototype.heartBeat = function (conn) {
-    debugger
     this.stopHeartBeat();
     this.heartBeatID = setInterval(function () {
         unreadDeal(conn)

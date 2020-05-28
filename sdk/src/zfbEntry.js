@@ -3,24 +3,40 @@ import WebIM from './connection'
 import Long from '../node_modules/long/dist/long';
 import getAll from './allnode'
 import protobufForWx from './weichatPb/protobuf';
+// import protobuf from 'protobufjs'
 import getCode from './status';
 import utils from './utils/wxUtils'
+import Base64 from '../node_modules/Base64/base64'
 const _code = getCode();
 let all = getAll()
 let root = WebIM.connection.prototype.root = protobufForWx.Root.fromJSON(all);
-let sock
+let sock = {
+    CLOSED: 3,
+    CLOSING: 2,
+    CONNECTING: 0,
+    OPEN: 1,
+    readyState: 1,
+}
 WebIM.connection.prototype.getParams({
     root: root,
     utils: utils
 })
-let base64transform = function (str, conn, notSend) {
-    let init8arr = new Uint8Array(str)
-    let obj = {
-        data: init8arr.buffer
+
+
+var base64transform = function (str, conn, notSend) {
+    var strr = "";
+    for (var i = 0; i < str.length; i++) {
+        var str0 = String.fromCharCode(str[i]);
+        strr = strr + str0;
     }
-    if (notSend) return obj
+    strr = Base64.btoa(strr)
+    if (notSend) return strr
+    let obj = {
+        isBuffer: true,
+        data: strr
+    }
     try {
-        sock.send(obj);
+        my.sendSocketMessage(obj);
     } catch (e) {
         conn.onError({
             type: _code.WEBIM_CONNCTION_USER_NOT_ASSIGN_ERROR,
@@ -29,33 +45,30 @@ let base64transform = function (str, conn, notSend) {
     }
 }
 
-function _getSock(conn) {
-    let sock = wx.connectSocket({
-        url: conn.url,
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function (e) {
-            // !conn.logOut && conn.heartBeat(conn) //连接成功开始发送心跳
-        },
-        fail: function (e) {
-            //部分机型从后台切回前台状态有延迟
-            if (e.errMsg.indexOf('suspend') != -1) {
-                //重连
-            }
-        }
-    })
-    return sock
-}
-
 var _login = function (options, conn) {
     if (!options) {
         return;
     }
     try {
-        sock = _getSock(conn);
-        WebIM.connection.prototype.sock = sock
-        sock.onOpen(function () {
+        my.connectSocket({
+            url: conn.url,
+            header: {
+                'content-type': 'application/json'
+            },
+            success: function (e) {
+                console.log('socket连接成功');
+                // sock.prototype.close = my.closeSocket()
+                conn.sock = sock
+            },
+            fail: function (e) {
+                //部分机型从后台切回前台状态有延迟
+                if (e.errMsg.indexOf('suspend') != -1) {
+                    //重连
+                }
+            }
+        })
+        my.onSocketOpen(function () {
+            debugger
             console.log('onOpen')
             // 初始重连状态
             conn.autoReconnectInterval = 0;
@@ -64,6 +77,8 @@ var _login = function (options, conn) {
             var emptyMessage = [];
             var time = (new Date()).valueOf();
             var provisionMessage = root.lookup("easemob.pb.Provision");
+            console.log('provisionMessage>',provisionMessage);
+            
             var secondMessage = provisionMessage.decode(emptyMessage);
 
             conn.context.jid.clientResource = conn.deviceId + "_" + time.toString();
@@ -100,7 +115,7 @@ var _login = function (options, conn) {
             conn.onOpened();
         });
 
-        sock.onClose(function (e) {
+        my.onSocketClose(function (e) {
             console.log('onClose', e)
             if (!conn.logOut &&
                 conn.autoReconnectNumTotal < conn.autoReconnectNumMax &&
@@ -125,11 +140,12 @@ var _login = function (options, conn) {
             }
         })
 
-        sock.onMessage(function (e) {
+        my.onSocketMessage(function (e) {
             var mainMessage = root.lookup("easemob.pb.MSync");
             var result = mainMessage.decode(e.data);
             switch (result.command) {
                 case 0:
+                    debugger
                     var CommSyncDLMessage = root.lookup("easemob.pb.CommSyncDL");
                     CommSyncDLMessage = CommSyncDLMessage.decode(result.payload);
                     var msgId = new Long(CommSyncDLMessage.serverId.low, CommSyncDLMessage.serverId.high, CommSyncDLMessage.serverId.unsigned).toString();
@@ -293,7 +309,6 @@ var _login = function (options, conn) {
 };
 
 WebIM.connection.prototype._base64transform = base64transform;
-WebIM.connection.prototype._getSock = _getSock;
 WebIM.connection.prototype._login = _login;
 
 WebIM.version = '_version';
